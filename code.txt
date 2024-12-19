@@ -1,0 +1,33 @@
+{
+  "kind": "Program",
+  "body": [
+    {
+      "kind": "BinaryExpr",
+      "left": {
+        "kind": "NumericLiteral",
+        "value": 10
+      },
+      "right": {
+        "kind": "BinaryExpr",
+        "left": {
+          "kind": "Identifier",
+          "symbol": "niket"
+        },
+        "right": {
+          "kind": "BinaryExpr",
+          "left": {
+            "kind": "NumericLiteral",
+            "value": 23
+          },
+          "right": {
+            "kind": "NumericLiteral",
+            "value": 6
+          },
+          "operator": "%"
+        },
+        "operator": "+"
+      },
+      "operator": "*"
+    }
+  ]
+}
