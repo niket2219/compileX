@@ -2,6 +2,7 @@ import { config } from "process";
 import Parser from "./frontend/parser";
 const prompt = require('prompt-sync')();
 const fs = require('fs').promises;
+import { evaluate } from "./runtime/interpreter";
 
 async function repl() {
     const parser = new Parser();
@@ -21,9 +22,12 @@ async function repl() {
                 continue;
             }
 
+            const interpreted = await evaluate(program);
+
             console.log(program);
 
-            await fs.writeFile('data.json', JSON.stringify(program, null, 2));
+            await fs.writeFile('data.json', JSON.stringify(program, null, 2),{flag : 'a'});
+            await fs.writeFile('data.json', JSON.stringify(interpreted, null, 2),{flag : 'a'});
             console.log("File written successfully...");
         } catch (error) {
             console.error("Error:", error);

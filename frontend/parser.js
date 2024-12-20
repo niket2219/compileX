@@ -77,11 +77,11 @@ var Parser = /** @class */ (function () {
     Parser.prototype.parse_primary_expr = function () {
         var tk = this.at().type;
         switch (tk) {
+            case lexer_1.TokenType.Identifier:
+                return { kind: "Identifier", symbol: this.eat().value };
             case lexer_1.TokenType.Null:
                 this.eat(); // Consume the null value
                 return { kind: "NullLiteral", value: "null" };
-            case lexer_1.TokenType.Identifier:
-                return { kind: "Identifier", symbol: this.eat().value };
             case lexer_1.TokenType.Number:
                 return { kind: "NumericLiteral", value: parseFloat(this.eat().value) };
             case lexer_1.TokenType.OpenParam:

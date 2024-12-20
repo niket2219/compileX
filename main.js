@@ -39,9 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var parser_1 = require("./frontend/parser");
 var prompt = require('prompt-sync')();
 var fs = require('fs').promises;
+var interpreter_1 = require("./runtime/interpreter");
 function repl() {
     return __awaiter(this, void 0, void 0, function () {
-        var parser, ip, program, error_1;
+        var parser, ip, program, interpreted, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -49,14 +50,14 @@ function repl() {
                     console.log("Repl 1.v.0.1");
                     _a.label = 1;
                 case 1:
-                    if (!true) return [3 /*break*/, 7];
+                    if (!true) return [3 /*break*/, 9];
                     ip = prompt("> ");
                     if (!ip || ip.includes("exit")) {
-                        return [3 /*break*/, 7];
+                        return [3 /*break*/, 9];
                     }
                     _a.label = 2;
                 case 2:
-                    _a.trys.push([2, 5, , 6]);
+                    _a.trys.push([2, 7, , 8]);
                     return [4 /*yield*/, parser.produceAST(ip)];
                 case 3:
                     program = _a.sent();
@@ -64,18 +65,24 @@ function repl() {
                         console.error("Invalid input or AST generation failed.");
                         return [3 /*break*/, 1];
                     }
-                    console.log(program);
-                    return [4 /*yield*/, fs.writeFile('data.json', JSON.stringify(program, null, 2))];
+                    return [4 /*yield*/, (0, interpreter_1.evaluate)(program)];
                 case 4:
+                    interpreted = _a.sent();
+                    console.log(program);
+                    return [4 /*yield*/, fs.writeFile('data.json', JSON.stringify(program, null, 2), { flag: 'a' })];
+                case 5:
+                    _a.sent();
+                    return [4 /*yield*/, fs.writeFile('data.json', JSON.stringify(interpreted, null, 2), { flag: 'a' })];
+                case 6:
                     _a.sent();
                     console.log("File written successfully...");
-                    return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 8];
+                case 7:
                     error_1 = _a.sent();
                     console.error("Error:", error_1);
-                    return [3 /*break*/, 6];
-                case 6: return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [3 /*break*/, 1];
+                case 9: return [2 /*return*/];
             }
         });
     });

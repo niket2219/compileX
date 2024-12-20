@@ -17,8 +17,8 @@ var TokenType;
     TokenType[TokenType["EOF"] = 8] = "EOF";
 })(TokenType || (exports.TokenType = TokenType = {}));
 var KEYWORDS = {
-    "let": TokenType.Let,
-    "null": TokenType.Null
+    let: TokenType.Let,
+    null: TokenType.Null
 };
 function isalpha(src) {
     return src.toUpperCase() != src.toLowerCase();
@@ -68,7 +68,7 @@ function tokenize(sourceCode) {
                 }
                 // check if identifier is a reserved keyword
                 var reserved = KEYWORDS[ident];
-                if (typeof reserved == 'number') {
+                if (typeof reserved == "number") {
                     tokens.push(token(ident, reserved));
                 }
                 else {

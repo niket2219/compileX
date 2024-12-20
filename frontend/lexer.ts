@@ -21,8 +21,8 @@ export interface Token {
 }
 
 const KEYWORDS: Record<string, TokenType> = {
-    "let": TokenType.Let,
-    "null" : TokenType.Null
+    let : TokenType.Let,
+    null : TokenType.Null
 }
 
 function isalpha(src: string) {
@@ -83,7 +83,7 @@ export function tokenize(sourceCode: string) : Token[] {
 
                 // check if identifier is a reserved keyword
                 const reserved = KEYWORDS[ident];
-                if (typeof reserved == 'number') {
+                if (typeof reserved == "number") {
                     tokens.push(token(ident, reserved));
                 }
                 else {
