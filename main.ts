@@ -3,10 +3,18 @@ import Parser from "./frontend/parser";
 const prompt = require('prompt-sync')();
 const fs = require('fs').promises;
 import { evaluate } from "./runtime/interpreter";
+import Environment from "./runtime/environment";
+import { MK_NULL, MK_NUMBER, MK_BOOL } from "./runtime/values";
 
 async function repl() {
     const parser = new Parser();
     console.log("Repl 1.v.0.1");
+
+    const env = new Environment();
+    env.declareVar("x" , MK_NUMBER(21))
+    env.declareVar("true" , MK_BOOL(true))
+    env.declareVar("false" , MK_BOOL(false))
+    env.declareVar("null" , MK_NULL())
 
     while (true) {
         const ip = prompt("> ");
@@ -22,7 +30,7 @@ async function repl() {
                 continue;
             }
 
-            const interpreted = await evaluate(program);
+            const interpreted = await evaluate(program,env);
 
             console.log(program);
 

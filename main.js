@@ -40,14 +40,21 @@ var parser_1 = require("./frontend/parser");
 var prompt = require('prompt-sync')();
 var fs = require('fs').promises;
 var interpreter_1 = require("./runtime/interpreter");
+var environment_1 = require("./runtime/environment");
+var values_1 = require("./runtime/values");
 function repl() {
     return __awaiter(this, void 0, void 0, function () {
-        var parser, ip, program, interpreted, error_1;
+        var parser, env, ip, program, interpreted, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     parser = new parser_1.default();
                     console.log("Repl 1.v.0.1");
+                    env = new environment_1.default();
+                    env.declareVar("x", (0, values_1.MK_NUMBER)(21));
+                    env.declareVar("true", (0, values_1.MK_BOOL)(true));
+                    env.declareVar("false", (0, values_1.MK_BOOL)(false));
+                    env.declareVar("null", (0, values_1.MK_NULL)());
                     _a.label = 1;
                 case 1:
                     if (!true) return [3 /*break*/, 9];
@@ -65,7 +72,7 @@ function repl() {
                         console.error("Invalid input or AST generation failed.");
                         return [3 /*break*/, 1];
                     }
-                    return [4 /*yield*/, (0, interpreter_1.evaluate)(program)];
+                    return [4 /*yield*/, (0, interpreter_1.evaluate)(program, env)];
                 case 4:
                     interpreted = _a.sent();
                     console.log(program);

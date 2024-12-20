@@ -6,19 +6,17 @@ exports.tokenize = tokenize;
 var fs = require('fs');
 var TokenType;
 (function (TokenType) {
-    TokenType[TokenType["Null"] = 0] = "Null";
-    TokenType[TokenType["Number"] = 1] = "Number";
-    TokenType[TokenType["Identifier"] = 2] = "Identifier";
-    TokenType[TokenType["Equals"] = 3] = "Equals";
-    TokenType[TokenType["OpenParam"] = 4] = "OpenParam";
-    TokenType[TokenType["CloseParam"] = 5] = "CloseParam";
-    TokenType[TokenType["BinaryOperator"] = 6] = "BinaryOperator";
-    TokenType[TokenType["Let"] = 7] = "Let";
-    TokenType[TokenType["EOF"] = 8] = "EOF";
+    TokenType[TokenType["Number"] = 0] = "Number";
+    TokenType[TokenType["Identifier"] = 1] = "Identifier";
+    TokenType[TokenType["Equals"] = 2] = "Equals";
+    TokenType[TokenType["OpenParam"] = 3] = "OpenParam";
+    TokenType[TokenType["CloseParam"] = 4] = "CloseParam";
+    TokenType[TokenType["BinaryOperator"] = 5] = "BinaryOperator";
+    TokenType[TokenType["Let"] = 6] = "Let";
+    TokenType[TokenType["EOF"] = 7] = "EOF";
 })(TokenType || (exports.TokenType = TokenType = {}));
 var KEYWORDS = {
     let: TokenType.Let,
-    null: TokenType.Null
 };
 function isalpha(src) {
     return src.toUpperCase() != src.toLowerCase();

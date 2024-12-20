@@ -1,6 +1,6 @@
 // Defining the types of Nodes
 
-export type NodeType = "Program" | "NumericLiteral" | "Identifier" | "BinaryExpr" | "NullLiteral";
+export type NodeType = "Program" | "NumericLiteral" | "Identifier" | "BinaryExpr";
 
 export interface Stat {
     kind: NodeType;
@@ -30,7 +30,7 @@ export interface NumericLiteral extends Expr{
     value : Number
 }
 
-export interface NullLiteral extends Expr{
-    kind: "NullLiteral";
-    value : "null"
-}
+// export interface NullLiteral extends Expr{
+//     kind: "NullLiteral";
+//     value : "null"
+// }

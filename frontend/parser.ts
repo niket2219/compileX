@@ -1,5 +1,5 @@
 import { tokenize, TokenType, Token } from './lexer';
-import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier, NullLiteral } from './ast';
+import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier } from './ast';
 import { exit } from 'process';
 
 // Order of precedence :
@@ -102,9 +102,9 @@ export default class Parser {
             case TokenType.Identifier:
                 return { kind: "Identifier", symbol: this.eat().value } as Identifier;
             
-            case TokenType.Null:
-                this.eat()          // Consume the null value
-                return { kind: "NullLiteral", value: "null" } as NullLiteral;
+            // case TokenType.Null:
+            //     this.eat()          // Consume the null value
+            //     return { kind: "NullLiteral", value: "null" } as NullLiteral;
             
             case TokenType.Number:
                 return { kind: "NumericLiteral", value: parseFloat(this.eat().value) } as NumericLiteral;

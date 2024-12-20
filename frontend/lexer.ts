@@ -3,7 +3,6 @@
 const fs = require('fs')
 
 export enum TokenType {
-    Null,
     Number,
     Identifier,
     Equals,
@@ -22,7 +21,6 @@ export interface Token {
 
 const KEYWORDS: Record<string, TokenType> = {
     let : TokenType.Let,
-    null : TokenType.Null
 }
 
 function isalpha(src: string) {

@@ -79,9 +79,9 @@ var Parser = /** @class */ (function () {
         switch (tk) {
             case lexer_1.TokenType.Identifier:
                 return { kind: "Identifier", symbol: this.eat().value };
-            case lexer_1.TokenType.Null:
-                this.eat(); // Consume the null value
-                return { kind: "NullLiteral", value: "null" };
+            // case TokenType.Null:
+            //     this.eat()          // Consume the null value
+            //     return { kind: "NullLiteral", value: "null" } as NullLiteral;
             case lexer_1.TokenType.Number:
                 return { kind: "NumericLiteral", value: parseFloat(this.eat().value) };
             case lexer_1.TokenType.OpenParam:
