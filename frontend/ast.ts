@@ -1,6 +1,10 @@
 // Defining the types of Nodes
 
-export type NodeType = "Program" | "NumericLiteral" | "Identifier" | "BinaryExpr";
+export type NodeType =
+    // Statemnets
+    "Program" | "VarDeclaration" |
+    // Expressions
+    "NumericLiteral" | "Identifier" | "BinaryExpr" 
 
 export interface Stat {
     kind: NodeType;
@@ -9,6 +13,13 @@ export interface Stat {
 export interface Program extends Stat {
     kind: "Program",
     body : Stat[]
+}
+
+export interface VarDeclaration extends Stat {
+    kind: "VarDeclaration",
+    constant: boolean,
+    identifier: string,
+    value? : Expr
 }
 
 export interface Expr extends Stat { }

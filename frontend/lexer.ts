@@ -10,6 +10,8 @@ export enum TokenType {
     CloseParam,
     BinaryOperator,
     Let,
+    Const,
+    Semicolon,
     EOF
 }
 
@@ -20,7 +22,8 @@ export interface Token {
 }
 
 const KEYWORDS: Record<string, TokenType> = {
-    let : TokenType.Let,
+    let: TokenType.Let,
+    const : TokenType.Const
 }
 
 function isalpha(src: string) {
@@ -63,6 +66,9 @@ export function tokenize(sourceCode: string) : Token[] {
         else if (src[0] == '=') {
             tokens.push(token(src.shift(), TokenType.Equals));
         }
+        else if (src[0] == ";") {
+            tokens.push(token(src.shift(), TokenType.Semicolon));
+            }
         else {
             // Building MultiCharacters tokens
 
@@ -102,14 +108,14 @@ export function tokenize(sourceCode: string) : Token[] {
     return tokens;
 }
 
-const filePath = 'code.txt'
+// const filePath = 'code.txt'
 
-try {
-    const srcCode = fs.readFileSync(filePath, 'utf-8');
+// try {
+//     const srcCode = fs.readFileSync(filePath, 'utf-8');
     
-    for (const t of tokenize(srcCode)) {
-        console.log(t);
-    }
-} catch (error) {
-    console.log(error);
-}
+//     for (const t of tokenize(srcCode)) {
+//         console.log(t);
+//     }
+// } catch (error) {
+//     console.log(error);
+// }

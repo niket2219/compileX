@@ -40,7 +40,30 @@ var Parser = /** @class */ (function () {
     };
     Parser.prototype.parse_stat = function () {
         // skip to parse expression
-        return this.parse_expr();
+        switch (this.at().type) {
+            case lexer_1.TokenType.Let:
+            case lexer_1.TokenType.Const:
+                return this.parse_var_declaration();
+            default:
+                return this.parse_expr();
+        }
+    };
+    // let | const niket ;
+    // let | const item = "value";
+    Parser.prototype.parse_var_declaration = function () {
+        var isConstant = this.eat().type == lexer_1.TokenType.Const;
+        var identifier = this.expect(lexer_1.TokenType.Identifier, "Expected an Identifier after let | const").value;
+        if (this.at().type == lexer_1.TokenType.Semicolon) {
+            this.eat();
+            if (isConstant) {
+                throw "Expected a Value to be assigned to a Constnt expression";
+            }
+            return { kind: "VarDeclaration", constant: false, identifier: identifier };
+        }
+        this.expect(lexer_1.TokenType.Equals, "Expected an Equal sign after ".concat(identifier));
+        var declration = { kind: "VarDeclaration", identifier: identifier, constant: isConstant, value: this.parse_expr() };
+        this.expect(lexer_1.TokenType.Semicolon, "Declaration Statement should end with ;");
+        return declration;
     };
     Parser.prototype.parse_expr = function () {
         // return this.parse_primary_expr();

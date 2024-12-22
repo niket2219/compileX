@@ -1,5 +1,5 @@
 import { tokenize, TokenType, Token } from './lexer';
-import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier } from './ast';
+import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VarDeclaration } from './ast';
 import { exit } from 'process';
 
 // Order of precedence :
@@ -33,8 +33,7 @@ export default class Parser {
 
     public produceAST(sourceCode: string): Program {
 
-        this.tokens = tokenize(sourceCode);
-        
+        this.tokens = tokenize(sourceCode);        
         const program: Program = {
             kind: "Program",
             body : []
@@ -50,7 +49,35 @@ export default class Parser {
 
     private parse_stat(): Stat {
         // skip to parse expression
-        return this.parse_expr();
+        switch (this.at().type) {
+            case TokenType.Let:
+            case TokenType.Const:
+                return this.parse_var_declaration()
+            default:
+                return this.parse_expr();
+        }
+    }
+
+    // let | const niket ;
+    // let | const item = "value";
+    private parse_var_declaration(): Stat {
+        const isConstant = this.eat().type == TokenType.Const;
+        const identifier = this.expect(TokenType.Identifier, "Expected an Identifier after let | const").value;
+
+        if (this.at().type == TokenType.Semicolon) {
+            this.eat();
+            if (isConstant) {
+                throw "Expected a Value to be assigned to a Constnt expression"
+            }
+            return {kind : "VarDeclaration",constant : false , identifier} as VarDeclaration;
+        }
+        
+        this.expect(TokenType.Equals, `Expected an Equal sign after ${identifier}`);
+
+        const declration = { kind: "VarDeclaration", identifier,constant: isConstant, value: this.parse_expr()} as VarDeclaration;
+        this.expect(TokenType.Semicolon, "Declaration Statement should end with ;");
+
+        return declration;
     }
 
     private parse_expr(): Expr {

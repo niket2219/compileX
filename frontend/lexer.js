@@ -13,10 +13,13 @@ var TokenType;
     TokenType[TokenType["CloseParam"] = 4] = "CloseParam";
     TokenType[TokenType["BinaryOperator"] = 5] = "BinaryOperator";
     TokenType[TokenType["Let"] = 6] = "Let";
-    TokenType[TokenType["EOF"] = 7] = "EOF";
+    TokenType[TokenType["Const"] = 7] = "Const";
+    TokenType[TokenType["Semicolon"] = 8] = "Semicolon";
+    TokenType[TokenType["EOF"] = 9] = "EOF";
 })(TokenType || (exports.TokenType = TokenType = {}));
 var KEYWORDS = {
     let: TokenType.Let,
+    const: TokenType.Const
 };
 function isalpha(src) {
     return src.toUpperCase() != src.toLowerCase();
@@ -49,6 +52,9 @@ function tokenize(sourceCode) {
         }
         else if (src[0] == '=') {
             tokens.push(token(src.shift(), TokenType.Equals));
+        }
+        else if (src[0] == ";") {
+            tokens.push(token(src.shift(), TokenType.Semicolon));
         }
         else {
             // Building MultiCharacters tokens
@@ -85,14 +91,12 @@ function tokenize(sourceCode) {
     tokens.push(token("EndOfFile", TokenType.EOF));
     return tokens;
 }
-var filePath = 'code.txt';
-try {
-    var srcCode = fs.readFileSync(filePath, 'utf-8');
-    for (var _i = 0, _a = tokenize(srcCode); _i < _a.length; _i++) {
-        var t = _a[_i];
-        console.log(t);
-    }
-}
-catch (error) {
-    console.log(error);
-}
+// const filePath = 'code.txt'
+// try {
+//     const srcCode = fs.readFileSync(filePath, 'utf-8');
+//     for (const t of tokenize(srcCode)) {
+//         console.log(t);
+//     }
+// } catch (error) {
+//     console.log(error);
+// }

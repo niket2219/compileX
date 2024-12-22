@@ -1,54 +1,9 @@
 import { ValueType, RuntimeVal, NumberVal, NullVal, MK_NULL } from "./values";
-import { BinaryExpr, Identifier, NodeType, NumericLiteral, Program, Stat } from '../frontend/ast'
+import { BinaryExpr, Identifier, NodeType, NumericLiteral, Program, Stat, VarDeclaration } from '../frontend/ast'
 import { exit } from "process";
 import Environment from "./environment";
-
-function eval_program(program: Program , env : Environment): RuntimeVal {
-    let lastEvaluated: RuntimeVal = { type: "null", value: null } as NullVal;
-
-    for (const statement of program.body) {
-        lastEvaluated = evaluate(statement,env);
-    }
-
-    return lastEvaluated;
-}
-
-function evaluate_binary_expr(binop: BinaryExpr , env : Environment): RuntimeVal {
-    const lhs = evaluate(binop.left , env);
-    const rhs = evaluate(binop.right ,env);
-
-    if (lhs.type == "number" && rhs.type == "number") {
-        return eval_numeric_binary_expr(lhs as NumberVal, rhs as NumberVal,binop.operator);
-    }
-    return { type: "null", value: null } as NullVal;
-}
-
-function eval_numeric_binary_expr(lhs: NumberVal, rhs: NumberVal, operator: string): NumberVal {
-    let result = 0;
-
-    if (operator == "+") {
-        result = lhs.value + rhs.value;
-    }
-    else if (operator == "-") {
-        result = lhs.value - rhs.value;
-    }
-    else if (operator == "*") {
-        result = lhs.value * rhs.value;
-    }
-    else if (operator == "/") {
-        result = lhs.value / rhs.value;
-    }
-    else {
-        result = lhs.value % rhs.value;
-    }
-
-    return { value: result, type: "number" } as NumberVal;
-}
-
-function eval_identifier(ident: Identifier , env : Environment): RuntimeVal {
-    const val = env.lookupVar(ident.symbol);
-    return val;
-}
+import { eval_identifier, evaluate_binary_expr } from "./eval/expressions";
+import { eval_program, eval_var_declaration } from "./eval/statements";
 
 export function evaluate(astNode: Stat , env : Environment): RuntimeVal {
     
@@ -63,10 +18,15 @@ export function evaluate(astNode: Stat , env : Environment): RuntimeVal {
             return evaluate_binary_expr(astNode as BinaryExpr , env);
         
         case "Program":
-            return eval_program(astNode as Program , env);
+            return eval_program(astNode as Program, env);
+        
+        case "VarDeclaration":
+            return eval_var_declaration(astNode as VarDeclaration, env);
         
         default:
             console.log("This AST Node can't be interpreted: ", astNode)
             exit();
     }
 }
+
+

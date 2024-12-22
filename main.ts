@@ -1,4 +1,3 @@
-import { config } from "process";
 import Parser from "./frontend/parser";
 const prompt = require('prompt-sync')();
 const fs = require('fs').promises;
