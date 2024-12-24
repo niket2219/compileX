@@ -1,5 +1,5 @@
 import { tokenize, TokenType, Token } from './lexer';
-import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VarDeclaration } from './ast';
+import { Stat, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VarDeclaration, AssignmentExpr } from './ast';
 import { exit } from 'process';
 
 // Order of precedence :
@@ -82,7 +82,19 @@ export default class Parser {
 
     private parse_expr(): Expr {
         // return this.parse_primary_expr();
-        return this.parse_additive_expr();
+        // assignment has lowest precedence so called first....
+        return this.parse_assignment_expr();
+    }
+    
+    private parse_assignment_expr(): Expr {
+        const left = this.parse_additive_expr();
+
+        if (this.at().type == TokenType.Equals) {
+            this.eat();
+            const value = this.parse_additive_expr();
+            return { value, assigne: left, kind: "AssignmentExpr" } as AssignmentExpr;
+        }
+        return left;
     }
 
     private parse_additive_expr(): Expr {

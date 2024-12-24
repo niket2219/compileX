@@ -16,6 +16,8 @@ function evaluate(astNode, env) {
             return (0, statements_1.eval_program)(astNode, env);
         case "VarDeclaration":
             return (0, statements_1.eval_var_declaration)(astNode, env);
+        case "AssignmentExpr":
+            return (0, expressions_1.eval_assignment_expr)(astNode, env);
         default:
             console.log("This AST Node can't be interpreted: ", astNode);
             (0, process_1.exit)();

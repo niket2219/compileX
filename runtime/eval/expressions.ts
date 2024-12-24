@@ -1,4 +1,4 @@
-import { BinaryExpr, Identifier } from "../../frontend/ast";
+import { AssignmentExpr, BinaryExpr, Identifier } from "../../frontend/ast";
 import Environment from "../environment";
 import { evaluate } from "../interpreter";
 import { RuntimeVal, NumberVal, NullVal } from "../values";
@@ -38,4 +38,12 @@ export function eval_numeric_binary_expr(lhs: NumberVal, rhs: NumberVal, operato
 export function eval_identifier(ident: Identifier , env : Environment): RuntimeVal {
     const val = env.lookupVar(ident.symbol);
     return val;
+}
+
+export function eval_assignment_expr(node: AssignmentExpr, env: Environment) : RuntimeVal {
+    if (node.assigne.kind != "Identifier") {
+        throw `Cannot assign value to an object like ${JSON.stringify(node.assigne)}`
+    }
+    const varname = (node.assigne as Identifier).symbol;
+    return env.assignVar(varname, evaluate(node.value, env));
 }

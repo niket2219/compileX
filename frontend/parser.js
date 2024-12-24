@@ -67,7 +67,17 @@ var Parser = /** @class */ (function () {
     };
     Parser.prototype.parse_expr = function () {
         // return this.parse_primary_expr();
-        return this.parse_additive_expr();
+        // assignment has lowest precedence so called first....
+        return this.parse_assignment_expr();
+    };
+    Parser.prototype.parse_assignment_expr = function () {
+        var left = this.parse_additive_expr();
+        if (this.at().type == lexer_1.TokenType.Equals) {
+            this.eat();
+            var value = this.parse_additive_expr();
+            return { value: value, assigne: left, kind: "AssignmentExpr" };
+        }
+        return left;
     };
     Parser.prototype.parse_additive_expr = function () {
         var left = this.parse_multiplicative_expr();

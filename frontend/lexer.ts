@@ -6,8 +6,11 @@ export enum TokenType {
     Number,
     Identifier,
     Equals,
-    OpenParam,
-    CloseParam,
+    Comma, Colon,
+    OpenParam,   // (
+    CloseParam,  // )
+    OpenBrace, // {}
+    ClosedBrace, // }
     BinaryOperator,
     Let,
     Const,
@@ -60,6 +63,12 @@ export function tokenize(sourceCode: string) : Token[] {
         else if (src[0] == ')') {
             tokens.push(token(src.shift(), TokenType.CloseParam));
         }
+        else if (src[0] == '{') {
+            tokens.push(token(src.shift(), TokenType.OpenBrace));
+        }
+        else if (src[0] == '}') {
+            tokens.push(token(src.shift(), TokenType.ClosedBrace));
+        }
         else if (src[0] == '+' || src[0] == '-' || src[0] == '*' || src[0] == '/' || src[0] == '%') {
             tokens.push(token(src.shift(), TokenType.BinaryOperator));
         }
@@ -68,6 +77,12 @@ export function tokenize(sourceCode: string) : Token[] {
         }
         else if (src[0] == ";") {
             tokens.push(token(src.shift(), TokenType.Semicolon));
+            }
+        else if (src[0] == ":") {
+            tokens.push(token(src.shift(), TokenType.Colon));
+            }
+        else if (src[0] == ",") {
+            tokens.push(token(src.shift(), TokenType.Comma));
             }
         else {
             // Building MultiCharacters tokens

@@ -9,13 +9,17 @@ var TokenType;
     TokenType[TokenType["Number"] = 0] = "Number";
     TokenType[TokenType["Identifier"] = 1] = "Identifier";
     TokenType[TokenType["Equals"] = 2] = "Equals";
-    TokenType[TokenType["OpenParam"] = 3] = "OpenParam";
-    TokenType[TokenType["CloseParam"] = 4] = "CloseParam";
-    TokenType[TokenType["BinaryOperator"] = 5] = "BinaryOperator";
-    TokenType[TokenType["Let"] = 6] = "Let";
-    TokenType[TokenType["Const"] = 7] = "Const";
-    TokenType[TokenType["Semicolon"] = 8] = "Semicolon";
-    TokenType[TokenType["EOF"] = 9] = "EOF";
+    TokenType[TokenType["Comma"] = 3] = "Comma";
+    TokenType[TokenType["Colon"] = 4] = "Colon";
+    TokenType[TokenType["OpenParam"] = 5] = "OpenParam";
+    TokenType[TokenType["CloseParam"] = 6] = "CloseParam";
+    TokenType[TokenType["OpenBrace"] = 7] = "OpenBrace";
+    TokenType[TokenType["ClosedBrace"] = 8] = "ClosedBrace";
+    TokenType[TokenType["BinaryOperator"] = 9] = "BinaryOperator";
+    TokenType[TokenType["Let"] = 10] = "Let";
+    TokenType[TokenType["Const"] = 11] = "Const";
+    TokenType[TokenType["Semicolon"] = 12] = "Semicolon";
+    TokenType[TokenType["EOF"] = 13] = "EOF";
 })(TokenType || (exports.TokenType = TokenType = {}));
 var KEYWORDS = {
     let: TokenType.Let,
@@ -47,6 +51,12 @@ function tokenize(sourceCode) {
         else if (src[0] == ')') {
             tokens.push(token(src.shift(), TokenType.CloseParam));
         }
+        else if (src[0] == '{') {
+            tokens.push(token(src.shift(), TokenType.OpenBrace));
+        }
+        else if (src[0] == '}') {
+            tokens.push(token(src.shift(), TokenType.ClosedBrace));
+        }
         else if (src[0] == '+' || src[0] == '-' || src[0] == '*' || src[0] == '/' || src[0] == '%') {
             tokens.push(token(src.shift(), TokenType.BinaryOperator));
         }
@@ -55,6 +65,12 @@ function tokenize(sourceCode) {
         }
         else if (src[0] == ";") {
             tokens.push(token(src.shift(), TokenType.Semicolon));
+        }
+        else if (src[0] == ":") {
+            tokens.push(token(src.shift(), TokenType.Colon));
+        }
+        else if (src[0] == ",") {
+            tokens.push(token(src.shift(), TokenType.Comma));
         }
         else {
             // Building MultiCharacters tokens

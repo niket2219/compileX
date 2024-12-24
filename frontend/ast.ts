@@ -4,7 +4,7 @@ export type NodeType =
     // Statemnets
     "Program" | "VarDeclaration" |
     // Expressions
-    "NumericLiteral" | "Identifier" | "BinaryExpr" 
+    "AssignmentExpr" | "NumericLiteral" | "Identifier" | "BinaryExpr" | "Property" | "ObjectLiteral"
 
 export interface Stat {
     kind: NodeType;
@@ -13,6 +13,12 @@ export interface Stat {
 export interface Program extends Stat {
     kind: "Program",
     body : Stat[]
+}
+
+export interface AssignmentExpr extends Expr {
+    kind: "AssignmentExpr",
+    assigne: Expr,       // it is an expr because object.key = value can also be handled
+    value : Expr
 }
 
 export interface VarDeclaration extends Stat {
@@ -39,6 +45,17 @@ export interface Identifier extends Expr {
 export interface NumericLiteral extends Expr{
     kind: "NumericLiteral";
     value : Number
+}
+
+export interface Property extends Expr{
+    kind: "Property";
+    key: string,
+    value? : Expr
+}
+
+export interface ObjectLiteral extends Expr{
+    kind: "ObjectLiteral";
+    properties : Property[]
 }
 
 // export interface NullLiteral extends Expr{

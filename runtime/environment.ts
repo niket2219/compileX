@@ -1,4 +1,11 @@
-import { RuntimeVal } from "./values";
+import { MK_BOOL, MK_NULL, MK_NUMBER, RuntimeVal } from "./values";
+
+function setupScope(env: Environment) {
+    env.declareVar("x" , MK_NUMBER(21),true)
+    env.declareVar("true" , MK_BOOL(true),true)
+    env.declareVar("false" , MK_BOOL(false),true)
+    env.declareVar("null" , MK_NULL(),true)
+}
 
 export default class Environment{
 
@@ -6,10 +13,15 @@ export default class Environment{
     private variables: Map<string, RuntimeVal>;
     private constants: Set<string>;
 
-    constructor(parENV? : Environment) {
+    constructor(parENV?: Environment) {
+        const global = parENV ? true : false;
         this.parent = parENV;
         this.variables = new Map();
         this.constants = new Set();
+
+        if (global) {
+            setupScope(this);
+        }
     }
 
     // Variable declaration

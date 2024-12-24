@@ -14,5 +14,5 @@ function eval_program(program, env) {
 }
 function eval_var_declaration(declaration, env) {
     var value = declaration.value ? (0, interpreter_1.evaluate)(declaration.value, env) : (0, values_1.MK_NULL)();
-    return env.declareVar(declaration.identifier, value);
+    return env.declareVar(declaration.identifier, value, declaration.constant);
 }

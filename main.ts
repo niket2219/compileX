@@ -10,10 +10,6 @@ async function repl() {
     console.log("Repl 1.v.0.1");
 
     const env = new Environment();
-    env.declareVar("x" , MK_NUMBER(21))
-    env.declareVar("true" , MK_BOOL(true))
-    env.declareVar("false" , MK_BOOL(false))
-    env.declareVar("null" , MK_NULL())
 
     while (true) {
         const ip = prompt("> ");
